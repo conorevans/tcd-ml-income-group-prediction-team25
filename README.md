@@ -1,1 +1,5 @@
 "# ML_Group_Competition" 
+
+The goal of this competition is to let you work in a group, learn from each other and deepen your machine learning skills. The task in this competition is the same as in the previous individual competition: predict the income of a person based on a number of features.
+
+The dataset is similar: It has all the same columns as the previous dataset, plus some additional columns. Those columns you already know (age, gender, profession, …) were created with the same method as in the individual competition. This means, if e.g. a certain scaling method worked well in the previous dataset for a feature, then it will probably work well in this dataset, too. What I did change though is the probability and the method for missing values. Also, the target is calculated completely different than in the individual competition. The computation is much more complex and I am not sure if you can achieve good results with linear regression (you might, but I am not sure). Performance is measured this time based on MAE (and not RMSE).
