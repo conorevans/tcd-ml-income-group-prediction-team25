@@ -1,8 +1,8 @@
 Group Members:
 ----------------
 
-Conor Evans - https://github.com/conorevans
-Ryan Barron - https://github.com/RyanBeerBarron
+Conor Evans - https://github.com/conorevans \n
+Ryan Barron - https://github.com/RyanBeerBarron \n
 Ruiqi Zhang - https://github.com/zhangriqi
 
 Aim of Assignment:
