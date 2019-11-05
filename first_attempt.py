@@ -10,7 +10,7 @@ from catboost import CatBoostRegressor
 
 model_frame = pd.read_csv('data/train.csv')
 
-target_columns = ['Year of Record','Age', 'Size of City', 'Yearly Income in addition to Salary (e.g. Rental Income)']
+target_columns = ['Year of Record', 'Gender', 'Crime Level in the City of Employement','Satisfation with employer', 'Country', 'Age', 'Profession', 'University Degree', 'Size of City', 'Yearly Income in addition to Salary (e.g. Rental Income)']
 
 for column in target_columns:
   model_frame[column] = model_frame[column].fillna(method='ffill')
@@ -20,7 +20,7 @@ dependent_var = model_frame['Total Yearly Income [EUR]'].values
 
 gcsv = GridSearchCV(estimator = CatBoostRegressor(random_state=15000),
                     param_grid = { 'n_estimators': (100, 200, 250), 'max_depth': (2, 4, 8) }, 
-                    n_jobs = -1, cv = 5, verbose=1, scoring='neg_mean_squared_error')
+                    n_jobs = -1, cv = 5, verbose=1, scoring='neg_mean_absolute_error')
 
 regr = Pipeline(steps=[('enc', TargetEncoder()),
                        ('grid', gcsv)])
