@@ -43,10 +43,3 @@ f.write("Instance,Total Yearly Income [EUR]\n")
 
 for i in range(len(y_predict)):
   f.write(str(instances[i]) + "," + str(y_predict[i]) + "\n")
-
-
-
-
-
-
-
