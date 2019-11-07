@@ -36,7 +36,7 @@ independent_vars = model_frame[target_columns]
 dependent_var = model_frame['Total Yearly Income [EUR]'].values
 
 gcsv = GridSearchCV(estimator = CatBoostRegressor(random_state=15000),
-                    param_grid = { 'n_estimators': (100, 200, 250), 'max_depth': (2, 4, 8) }, 
+                    param_grid = { 'n_estimators': (100, 200, 250), 'max_depth': (4, 8, 16) }, 
                     n_jobs = -1, cv = 5, verbose=1, scoring='neg_mean_absolute_error')
 
 regr = Pipeline(steps=[('enc', TargetEncoder()),
