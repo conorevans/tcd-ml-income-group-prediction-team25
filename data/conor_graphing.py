@@ -8,7 +8,7 @@ from sklearn.impute import SimpleImputer
 from category_encoders import TargetEncoder
 from sklearn.compose import ColumnTransformer
 
-model_frame = pd.read_csv('train.csv').head(250000)
+model_frame = pd.read_csv('train.csv')#.head(250000)
 
 fig, ax = plt.subplots()
 target = model_frame['Total Yearly Income [EUR]']
