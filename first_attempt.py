@@ -44,22 +44,6 @@ def preprocess(frame):
 model_frame = preprocess(model_frame)
 target_frame = preprocess(target_frame)
 
-# fill NaN values in categorical fields with not_given
-for column in model_frame.select_dtypes(include=['object']):
-  # we want to mark categorical values as not_given (missing, non_present, whatever preferred term)
-  # as there may be a connection between values not being given and other target variables (in our case, Income)
-  # people from country X may be more reticent to share salary, height, whatever.
-  # best not to ffill 
-  model_frame[column] = model_frame[column].fillna('not_given')
-
-for column in model_frame.select_dtypes(exclude=['object']).drop('Instance', axis=1):
-  # cut bottom and top 10 percent of data to have a more balanced mean used to fill N/A values
-  lower = np.percentile(model_frame[column].dropna(),10)
-  upper = np.percentile(model_frame[column].dropna(),90)
-  mean = model_frame[model_frame[column].between(lower,upper)][column].values.mean()
-  model_frame[column] = model_frame[column].fillna(mean)
-
-
 model_frame['Small City'] = model_frame['Size of City'] <= 3000
 target_frame['Small City'] = target_frame['Size of City'] <= 3000
     
@@ -69,7 +53,7 @@ independent_vars = model_frame[target_columns]
 dependent_var = model_frame['Total Yearly Income [EUR]'].apply(np.log).values
 
 gcsv = GridSearchCV(estimator = CatBoostRegressor(random_state=15000),
-                    param_grid = { 'n_estimators': (400, 800), 'max_depth': (2, 4, 8) }, 
+                    param_grid = { 'n_estimators': (400, 800), 'max_depth': (4, 8, 12) }, 
                     n_jobs = -1, cv = 5, verbose=1, scoring='neg_mean_absolute_error')
 
 regr = Pipeline(steps=[('enc', TargetEncoder()),
