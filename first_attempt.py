@@ -68,8 +68,8 @@ target_columns = ['Work Experience in Current Job [years]','Year of Record', 'Ge
 independent_vars = model_frame[target_columns]
 dependent_var = model_frame['Total Yearly Income [EUR]'].apply(np.log).values
 
-gcsv = GridSearchCV(estimator = CatBoostRegressor(random_state=15000, learning_rate=(0.01, 0.02, 0.03)),
-                    param_grid = { 'n_estimators': (200, 300), 'max_depth': (4, 8, 16) }, 
+gcsv = GridSearchCV(estimator = CatBoostRegressor(random_state=15000),
+                    param_grid = { 'n_estimators': (400, 800), 'max_depth': (2, 4, 8) }, 
                     n_jobs = -1, cv = 5, verbose=1, scoring='neg_mean_absolute_error')
 
 regr = Pipeline(steps=[('enc', TargetEncoder()),
@@ -91,3 +91,5 @@ f.write("Instance,Total Yearly Income [EUR]\n")
 
 for i in range(len(y_predict)):
   f.write(str(instances[i]) + "," + str(y_predict[i]) + "\n")
+
+print('submission complete')
