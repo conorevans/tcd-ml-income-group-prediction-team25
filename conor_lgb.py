@@ -21,8 +21,8 @@ def treat_university_degree(frame):
   return frame
 
 def treat_work_experience(frame):
-    frame['Work Experience in Current Job [years]'] = pd.to_numeric(frame['Work Experience in Current Job [years]'], errors='coerce')
-    return frame
+  frame['Work Experience in Current Job [years]'] = pd.to_numeric(frame['Work Experience in Current Job [years]'], errors='coerce')
+  return frame
 
 # remove EUR from additional income input i.e. change '2555.12 EUR' to 2555.12
 def treat_additional_income(frame):
@@ -114,6 +114,7 @@ def preprocess(frame):
   frame = treat_work_experience(frame)
   frame = treat_additional_income(frame)
   frame = treat_year_of_record(frame)
+  # Excel error we need to deal with
   frame = frame.replace('#NUM!', np.NaN)
   frame = fillna_categorical(frame)
   frame = frame.fillna(method = 'bfill')
@@ -127,7 +128,7 @@ model_frame, target_frame = treat_profession(model_frame, target_frame)
 
 model_frame['Small City'] = model_frame['Size of City'] <= 3000
 target_frame['Small City'] = target_frame['Size of City'] <= 3000
-    
+
 target_columns = ['Work Experience in Current Job [years]','Year of Record', 'Gender', 'Crime Level in the City of Employement', 
                   'country-pcc', 'country-p_value', 'Age', 'University Degree', 'Small City', 'Size of City', 
                   'Yearly Income in addition to Salary (e.g. Rental Income)', 'profession-pcc', 'profession-p_value']
