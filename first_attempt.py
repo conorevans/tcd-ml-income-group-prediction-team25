@@ -6,6 +6,8 @@ from sklearn.pipeline import Pipeline
 from category_encoders import TargetEncoder
 from sklearn.compose import ColumnTransformer
 from catboost import CatBoostRegressor
+from scipy.stats import stats
+from lightgbm import LGBMRegressor
 
 model_frame = pd.read_csv('data/train.csv')
 target_frame = pd.read_csv('data/test.csv')
@@ -31,6 +33,39 @@ def treat_year_of_record(frame):
   frame['Year of Record'] = frame['Year of Record'].fillna(method='bfill')
   return frame
 
+def treat_country(model_frame, target_frame):
+  model_frame['country-z_score'] = model_frame['Country']
+  model_frame['country-p_score'] = model_frame['Country']
+
+  target_frame['country-z_score'] = target_frame['Country']
+  target_frame['country-p_score'] = target_frame['Country']
+  p_dict = {}
+  z_dict = {}
+
+  for country in model_frame['Country'].unique():
+    p_score, z_score = stats.pearsonr(model_frame['Country'] == country, model_frame['Total Yearly Income [EUR]'])
+    unrelated = z_score > 0.05
+    z_dict[country] = str(unrelated)
+    p_dict[country] = p_score
+
+    model_frame.loc[model_frame['Country'] == country, 'country-z_score'] = str(unrelated)
+    model_frame.loc[model_frame['Country'] == country, 'country-p_score'] = float(p_score)
+
+  for country in target_frame['Country'].unique():
+    if country in z_dict:
+      target_frame.loc[target_frame['Country'] == country, 'country-z_score'] = z_dict[country]
+      target_frame.loc[target_frame['Country'] == country, 'country-p_score'] = p_dict[country]
+    else:
+      target_frame.loc[target_frame['Country'] == country, 'country-z_score'] = 'unknown'
+      target_frame.loc[target_frame['Country'] == country, 'country-p_score'] = 'nA'
+
+  model_frame = model_frame.drop('Country', axis=1)
+  target_frame = target_frame.drop('Country', axis=1)
+  target_frame = target_frame.fillna(method = 'bfill')
+
+  return [model_frame, target_frame]
+
+
 def preprocess(frame):
   frame = treat_gender(frame)
   frame = treat_university_degree(frame)
@@ -44,22 +79,24 @@ def preprocess(frame):
 model_frame = preprocess(model_frame)
 target_frame = preprocess(target_frame)
 
+model_frame, target_frame = treat_country(model_frame, target_frame)
+
 model_frame['Small City'] = model_frame['Size of City'] <= 3000
 target_frame['Small City'] = target_frame['Size of City'] <= 3000
     
-target_columns = ['Work Experience in Current Job [years]','Year of Record', 'Gender', 'Crime Level in the City of Employement', 'Country', 'Age', 'Profession', 'University Degree', 'Small City', 'Size of City', 'Yearly Income in addition to Salary (e.g. Rental Income)']
+target_columns = ['Work Experience in Current Job [years]','Year of Record', 'Gender', 'Crime Level in the City of Employement', 'country-p_score', 'Age', 'Profession', 'University Degree', 'Small City', 'Size of City', 'Yearly Income in addition to Salary (e.g. Rental Income)', 'country-z_score']
 
 independent_vars = model_frame[target_columns]
 dependent_var = model_frame['Total Yearly Income [EUR]'].apply(np.log).values
 
-gcsv = GridSearchCV(estimator = CatBoostRegressor(random_state=15000),
+gcsv = GridSearchCV(estimator = LGBMRegressor(random_state=15000, num_leaves=4200),
                     param_grid = { 'n_estimators': (400, 800), 'max_depth': (4, 8, 12) }, 
                     n_jobs = -1, cv = 5, verbose=1, scoring='neg_mean_absolute_error')
 
 regr = Pipeline(steps=[('enc', TargetEncoder()),
                        ('grid', gcsv)])
 
-X_train, X_test, Y_train, Y_test = train_test_split(independent_vars, dependent_var, train_size = 0.8, test_size = 0.2)
+X_train, X_test, Y_train, Y_test = train_test_split(independent_vars, dependent_var, train_size = 0.8)
 
 regr.fit(X_train, Y_train)
 
