@@ -45,7 +45,7 @@ def treat_country(model_frame, target_frame):
 
   for country in model_frame['Country'].unique():
     # scipy.stats.pearsonr(x, y)
-    # Calculates a Pearson correlation coefficient and the p-value for testing non-correlation.
+    # Calculates a Pearson correlation coefficient ('pcc') and the p-value for testing non-correlation.
     pcc, p_value = stats.pearsonr(model_frame['Country'] == country, model_frame['Total Yearly Income [EUR]'])
     unrelated = p_value > 0.05
     pcc_dict[country] = pcc
@@ -137,12 +137,12 @@ independent_vars = model_frame[target_columns]
 # scale our target variable
 dependent_var = model_frame['Total Yearly Income [EUR]'].apply(np.log).values
 
-gcsv = GridSearchCV(estimator = LGBMRegressor(random_state=15000, num_leaves=4200),
+gscv = GridSearchCV(estimator = LGBMRegressor(random_state=15000, num_leaves=4200),
                     param_grid = { 'n_estimators': (400, 800), 'max_depth': (4, 8, 12) }, 
                     n_jobs = -1, cv = 5, verbose=1, scoring='neg_mean_absolute_error')
 
 regr = Pipeline(steps=[('enc', TargetEncoder()),
-                       ('grid', gcsv)])
+                       ('grid', gscv)])
 
 X_train, X_test, Y_train, Y_test = train_test_split(independent_vars, dependent_var, train_size = 0.8)
 
