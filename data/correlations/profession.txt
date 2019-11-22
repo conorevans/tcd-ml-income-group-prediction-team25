@@ -1,0 +1,463 @@
+group head
+-0.0027785087213162054
+False
+heavy vehicle and mobile equipment service technician
+-0.0012140292597099338
+True
+sorter
+0.0005295396823313212
+True
+quality control senior engineer
+-0.002031364159402028
+False
+logistician
+-0.0006760097758503233
+True
+unix/linux systems lead
+0.0021303231028658295
+False
+purchasing agent
+-0.003631709158167159
+False
+quality management specialist
+-0.002442968759344824
+False
+investment officer
+-0.0017543039749206056
+True
+rigger
+-0.00023561050060572514
+True
+pumping station operator
+-0.0024538571306011113
+False
+industrial production manager
+-0.002247903710205528
+False
+permit records assistant
+0.0027414629224775094
+False
+janitorial worker
+0.001068996657395191
+True
+policeman
+0.003893584126616215
+False
+registered nurse
+-0.0008040635311979823
+True
+information security identity & access manager
+-0.0010249101808386678
+True
+senior project officer
+6.0236638721254825e-05
+True
+packager
+0.003269337866122467
+False
+parks enforcement patrol
+0.002475624580701819
+False
+real estate broker
+-0.0002193106216932493
+True
+Ambulance Controller
+0.0006921131198885773
+True
+lobby attendant
+0.0014563127982627157
+True
+senior program manager
+0.0021587039518850427
+False
+receivables/payables analyst
+-0.0030334765264433423
+False
+recruitment assistant
+-0.0007172887459191861
+True
+senior human capital partnership and performance management analyst
+0.0017584531514854107
+True
+ordnance handling expert
+0.0012480256992541438
+True
+optical network engineer
+0.0026073025180428635
+False
+office coordinator
+0.0015917363827119594
+True
+news analyst
+0.0036408019406757907
+False
+insurance sales agent
+-0.0006759704022214386
+True
+product manager
+-0.0036067744600956683
+False
+foster care program evaluator
+-0.002070574870432372
+False
+maintenance worker
+-0.0024162060581976847
+False
+public policy and training coordinator
+-0.0031109663376469787
+False
+it helpdesk manager
+-0.0010841116166223459
+True
+nursing supervisor
+0.0040258972466272825
+False
+veterinarian
+8.36446210416194e-05
+True
+integrity control officer
+0.00017186019975042873
+True
+human resources college aide
+-0.0013542199752954538
+True
+lead design engineer
+-0.0003246702094501257
+True
+service contract procurement analyst
+0.0010811177024193728
+True
+photogrammetrist
+0.005768950385832282
+False
+ip telephony design engineer
+-8.755659451308046e-05
+True
+desk clerk
+-0.0022828884873871006
+False
+shuttle car operator
+0.0006734108300074584
+True
+lead expense management analyst
+0.0016516559239658608
+True
+physical therapist assistant
+0.004788738669911043
+False
+program assistant
+-0.004197066894193381
+False
+parts salesperson
+0.002872980867436184
+False
+surgeon
+-0.00025285898284574295
+True
+staff analyst
+0.000281344846850075
+True
+security officer
+-0.0025214900192890785
+False
+occupational therapist assistant
+-0.0003126019250912898
+True
+review unit supervisor
+-0.0036026498519207304
+False
+senior data scientist
+0.0003684486393072894
+True
+public records aide
+-0.0032469034132470297
+False
+learning management
+0.0007845347307491583
+True
+pile-driver operator
+0.005477716380795638
+False
+service station attendant
+0.00017621783959601172
+True
+projects coordinator
+-0.003895351011042526
+False
+loan counselor
+-0.0007031920134211725
+True
+messenger
+0.0041538899637736885
+False
+oil burner specialist
+0.003291837879945658
+False
+program management office assistant
+-0.0026739387406890316
+False
+ordered deductions analyst
+0.001833412525422126
+True
+public relations specialist
+-0.0032785210052721594
+False
+meter reader
+0.002451709559465535
+False
+pest control aide
+0.0033515152258618407
+False
+word processor 
+0.0028034747765249544
+False
+payment analyst
+-0.000766326256842082
+True
+penalty processing unit cashier
+0.004218131465469045
+False
+retail buyer
+-0.0008497183680122756
+True
+investigative consultant
+0.0009512910800070998
+True
+section chief
+-0.0016994024520233597
+True
+certified specialist
+-0.0012967620156986682
+True
+procurement clerk
+-0.003674148711743073
+False
+information security officer
+-0.002728786426455706
+False
+staff analyst level ii
+0.0009357388909829232
+True
+scanning operator
+-0.0007945838782229064
+True
+medical technician
+0.0007626325437803198
+True
+dynamic crm developer
+-0.0035628450632963324
+False
+scientistscientist
+0.00016424941156321357
+True
+regulatory compliance agency attorney
+-0.0026392689971733037
+False
+juvenile justice trainer
+-0.0014006744611300157
+True
+technical project manager/product owner
+0.0009533339302768672
+True
+jeweler
+-0.0012310511569216729
+True
+pipefitter
+0.0019894092507373924
+False
+program contract analyst
+-0.002793828285159763
+False
+manager
+-0.0031119370542903456
+False
+mediation coordinator
+-4.4690614094628095e-05
+True
+product advisor
+-0.0026214346588086987
+False
+pharmacist
+0.0035427939033355308
+False
+policy analyst
+0.004584006418547126
+False
+petroleum technician
+0.001268609862841642
+True
+therapist
+0.003139016262408625
+False
+mapping technician
+-0.0006204003159083138
+True
+it support technician
+-0.0016332840724763169
+True
+it - project manager
+-0.0007358776797835504
+True
+teller
+0.00184881803360005
+True
+wireless coordinator
+0.003658457969741125
+False
+summer communications assistant
+-0.0022314106935533142
+False
+labor relations attorney
+-0.0009339418598838038
+True
+ship loaders
+0.0024792023728548384
+False
+physician assistant
+0.004590451294898985
+False
+labor relations specialist
+-0.002681226007394681
+False
+operations associate
+0.006168885537920431
+False
+project coordinator
+-0.0036591195078459655
+False
+supervising nurse
+-0.0009973677618258109
+True
+strategic operations policy analyst
+0.0012145045029078121
+True
+office manager
+0.0008750562227714532
+True
+medical assistant
+0.0006751057389541985
+True
+research assistant
+-0.0021757720633619453
+False
+quality control case reviewer
+-0.001096845433046169
+True
+senior inspector
+0.0017101758228671863
+True
+seasonal city park worker
+7.685126087189283e-05
+True
+compliance officer
+-0.001447976034769944
+True
+space analyst
+9.950431657430838e-05
+True
+front end developer
+-0.002484069130891528
+False
+recruiting & onboarding coordinator
+-0.0037157893944679194
+False
+mailroom control clerk
+-0.0010288215752357781
+True
+school mental health training coordinator
+-0.000138320325431752
+True
+senior analyst
+0.00118995195308842
+True
+tax examiner
+0.00038026836376565194
+True
+staff auditor
+0.0013316813915088563
+True
+nuclear technicians
+0.0017784088750397897
+True
+public health nurse
+-0.0028145542537170365
+False
+program planner
+-0.0011689997454218828
+True
+student data analyst
+0.003834720529744813
+False
+mailroom section supervisor
+0.0007228825722560222
+True
+research scientist
+-0.0033916181669531352
+False
+electrical engineer
+-0.001473234720502544
+True
+hostess
+-0.003482426882437941
+False
+systems administrator - computer software
+0.0022842885865880865
+False
+police surgeon
+0.0019541041588990123
+False
+process messenger
+-0.004255000948462318
+False
+senior data analyst
+-0.00026209353696117206
+True
+Aircraft Maintenance Engineer
+0.0011454058015881445
+True
+senior police administrative aide
+-0.0008315838275203002
+True
+school mental health consultant
+-0.0006531319424433791
+True
+economic analyst
+-0.0006229015857587384
+True
+quality assurance project manager
+-0.0032449595628202153
+False
+radio and telecommunications equipment installer
+-0.0010917046240542995
+True
+quality assurance specialist
+-0.0020438986152644238
+False
+temporary painter
+-0.0004899783805392033
+True
+neigborhood resiliency specialist
+0.0015549167500976493
+True
+quality assurance manager
+-0.003801270308880826
+False
+securities commodities and financial services sales agent
+-0.0011070224642742853
+True
+furniture coordinator
+-0.003375681651049495
+False
+roof bolter
+0.001533952106762981
+True
+mechanical engineer
+0.002740233372679636
+False
+singer
+0.0015229139323815544
+True
+letterer and sign painter
+0.0020427073519676564
+False
+information systems and quality analyst

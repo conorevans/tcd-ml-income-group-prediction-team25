@@ -63,6 +63,38 @@ def treat_country(model_frame, target_frame):
 
   return [model_frame, target_frame]
 
+def treat_profession(model_frame, target_frame):
+  model_frame['profession-z_score'] = model_frame['Profession']
+  model_frame['profession-p_score'] = model_frame['Profession']
+
+  target_frame['profession-z_score'] = target_frame['Profession']
+  target_frame['profession-p_score'] = target_frame['Profession']
+  p_dict = {}
+  z_dict = {}
+
+  for profession in model_frame['Profession'].unique():
+    p_score, z_score = stats.pearsonr(model_frame['Profession'] == profession, model_frame['Total Yearly Income [EUR]'])
+    unrelated = z_score > 0.05
+    z_dict[profession] = str(unrelated)
+    p_dict[profession] = p_score
+
+    model_frame.loc[model_frame['Profession'] == profession, 'profession-z_score'] = str(unrelated)
+    model_frame.loc[model_frame['Profession'] == profession, 'profession-p_score'] = float(p_score)
+
+  for profession in target_frame['Profession'].unique():
+    if profession in z_dict:
+      target_frame.loc[target_frame['Profession'] == profession, 'profession-z_score'] = z_dict[profession]
+      target_frame.loc[target_frame['Profession'] == profession, 'profession-p_score'] = p_dict[profession]
+    else:
+      target_frame.loc[target_frame['Profession'] == profession, 'profession-z_score'] = 'unknown'
+      target_frame.loc[target_frame['Profession'] == profession, 'profession-p_score'] = 'nA'
+
+  model_frame = model_frame.drop('Profession', axis=1)
+  target_frame = target_frame.drop('Profession', axis=1)
+  target_frame = target_frame.fillna(method = 'bfill')
+
+  return [model_frame, target_frame]
+
 
 def preprocess(frame):
   frame = treat_gender(frame)
@@ -78,11 +110,12 @@ model_frame = preprocess(model_frame)
 target_frame = preprocess(target_frame)
 
 model_frame, target_frame = treat_country(model_frame, target_frame)
+model_frame, target_frame = treat_profession(model_frame, target_frame)
 
 model_frame['Small City'] = model_frame['Size of City'] <= 3000
 target_frame['Small City'] = target_frame['Size of City'] <= 3000
     
-target_columns = ['Work Experience in Current Job [years]','Year of Record', 'Gender', 'Crime Level in the City of Employement', 'country-p_score', 'Age', 'Profession', 'University Degree', 'Small City', 'Size of City', 'Yearly Income in addition to Salary (e.g. Rental Income)', 'country-z_score']
+target_columns = ['Work Experience in Current Job [years]','Year of Record', 'Gender', 'Crime Level in the City of Employement', 'country-p_score', 'Age', 'profession-p_score', 'University Degree', 'Small City', 'Size of City', 'Yearly Income in addition to Salary (e.g. Rental Income)', 'country-z_score', 'profession-z_score']
 
 independent_vars = model_frame[target_columns]
 dependent_var = model_frame['Total Yearly Income [EUR]'].apply(np.log).values
