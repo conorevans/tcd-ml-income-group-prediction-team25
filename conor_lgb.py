@@ -16,25 +16,29 @@ def treat_gender(frame):
   frame['Gender'] = frame['Gender'].replace({'f': 'female'})
   return frame
 
-def treat_university_degree(frame):
-  frame['University Degree'] = frame['University Degree'].replace({'No': 'not_given'})
-  return frame
-
 def treat_work_experience(frame):
   frame['Work Experience in Current Job [years]'] = pd.to_numeric(frame['Work Experience in Current Job [years]'], errors='coerce')
+  frame['Work Experience in Current Job [years]'] = frame['Work Experience in Current Job [years]'].fillna(method='bfill')
+  frame['significant-work-experience'] = frame['Work Experience in Current Job [years]'].between(15,30)
   return frame
 
 # remove EUR from additional income input i.e. change '2555.12 EUR' to 2555.12
 def treat_additional_income(frame):
   frame['Yearly Income in addition to Salary (e.g. Rental Income)'] = frame['Yearly Income in addition to Salary (e.g. Rental Income)'].map(lambda x: float(x.rstrip('EUR')))
+  frame = frame.astype({'Yearly Income in addition to Salary (e.g. Rental Income)': float})
+  frame['high-additional-income'] = frame['Yearly Income in addition to Salary (e.g. Rental Income)'] >= 20000.00
   return frame
 
 # 'Year of Record' appears to be ordered
 # give all the n/a values are at the end of the file, we backwards fill
 def treat_year_of_record(frame):
   frame['Year of Record'] = frame['Year of Record'].fillna(method='bfill')
+  frame['post-2010'] = frame['Year of Record'] >= 2010.0
   return frame
 
+# instead of encoding ~200 countries, build two columns using
+# pearson correlation coefficient for correlation and p_value for
+# non-correlation, then drop original country column
 def treat_country(model_frame, target_frame):
   model_frame['country-pcc'] = model_frame['Country']
   model_frame['country-p_value'] = model_frame['Country']
@@ -110,13 +114,14 @@ def fillna_categorical(frame):
 
 def preprocess(frame):
   frame = treat_gender(frame)
-  frame = treat_university_degree(frame)
   frame = treat_work_experience(frame)
   frame = treat_additional_income(frame)
   frame = treat_year_of_record(frame)
   # Excel error we need to deal with
   frame = frame.replace('#NUM!', np.NaN)
   frame = fillna_categorical(frame)
+  frame['unhappy'] = frame['Satisfation with employer'] == 'Unhappy'
+  frame['average'] = frame['Satisfation with employer'] == 'Average'
   frame = frame.fillna(method = 'bfill')
   return frame
 
@@ -126,16 +131,15 @@ target_frame = preprocess(target_frame)
 model_frame, target_frame = treat_country(model_frame, target_frame)
 model_frame, target_frame = treat_profession(model_frame, target_frame)
 
-model_frame['Small City'] = model_frame['Size of City'] <= 3000
-target_frame['Small City'] = target_frame['Size of City'] <= 3000
-
 target_columns = ['Work Experience in Current Job [years]','Year of Record', 'Gender', 'Crime Level in the City of Employement', 
-                  'country-pcc', 'country-p_value', 'Age', 'University Degree', 'Small City', 'Size of City', 
-                  'Yearly Income in addition to Salary (e.g. Rental Income)', 'profession-pcc', 'profession-p_value']
+                  'country-pcc', 'country-p_value', 'Age', 'University Degree', 'Size of City', 
+                  'Yearly Income in addition to Salary (e.g. Rental Income)', 'profession-pcc', 'profession-p_value',
+                  # see data/correlations/ wexp.txt, additionalincome.txt, satisfation.txt
+                  'significant-work-experience', 'high-additional-income', 'unhappy', 'average']
 
-independent_vars = model_frame[target_columns]
+selected_features = model_frame[target_columns]
 # scale our target variable
-dependent_var = model_frame['Total Yearly Income [EUR]'].apply(np.log).values
+income = model_frame['Total Yearly Income [EUR]'].apply(np.log).values
 
 gscv = GridSearchCV(estimator = LGBMRegressor(random_state=15000, num_leaves=4200),
                     param_grid = { 'n_estimators': (400, 800), 'max_depth': (4, 8, 12) }, 
@@ -144,7 +148,7 @@ gscv = GridSearchCV(estimator = LGBMRegressor(random_state=15000, num_leaves=420
 regr = Pipeline(steps=[('enc', TargetEncoder()),
                        ('grid', gscv)])
 
-X_train, X_test, Y_train, Y_test = train_test_split(independent_vars, dependent_var, train_size = 0.8)
+X_train, X_test, Y_train, Y_test = train_test_split(selected_features, income, train_size = 0.8)
 
 regr.fit(X_train, Y_train)
 
