@@ -33,7 +33,6 @@ def treat_additional_income(frame):
 # give all the n/a values are at the end of the file, we backwards fill
 def treat_year_of_record(frame):
   frame['Year of Record'] = frame['Year of Record'].fillna(method='bfill')
-  frame['post-2010'] = frame['Year of Record'] >= 2010.0
   return frame
 
 # instead of encoding ~200 countries, build two columns using
