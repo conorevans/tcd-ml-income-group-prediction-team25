@@ -120,17 +120,21 @@ def preprocess(frame):
   # Excel error we need to deal with
   frame = frame.replace('#NUM!', np.NaN)
   frame = fillna_categorical(frame)
+  # see data/correlations/satisfation.txt
   frame['unhappy'] = frame['Satisfation with employer'] == 'Unhappy'
   frame['average'] = frame['Satisfation with employer'] == 'Average'
+  # ensure no null values were introduced
   frame = frame.fillna(method = 'bfill')
   return frame
 
+# process data
 model_frame = preprocess(model_frame)
 target_frame = preprocess(target_frame)
 
 model_frame, target_frame = treat_country(model_frame, target_frame)
 model_frame, target_frame = treat_profession(model_frame, target_frame)
 
+# feature select
 target_columns = ['Work Experience in Current Job [years]','Year of Record', 'Gender', 'Crime Level in the City of Employement', 
                   'country-pcc', 'country-p_value', 'Age', 'University Degree', 'Size of City', 
                   'Yearly Income in addition to Salary (e.g. Rental Income)', 'profession-pcc', 'profession-p_value',
@@ -141,6 +145,7 @@ selected_features = model_frame[target_columns]
 # scale our target variable
 income = model_frame['Total Yearly Income [EUR]'].apply(np.log).values
 
+# build GridSearch Object and regression pipeline
 gscv = GridSearchCV(estimator = LGBMRegressor(random_state=15000, num_leaves=4200),
                     param_grid = { 'n_estimators': (400, 800), 'max_depth': (4, 8, 12) }, 
                     n_jobs = -1, cv = 5, verbose=1, scoring='neg_mean_absolute_error')
@@ -153,6 +158,7 @@ X_train, X_test, Y_train, Y_test = train_test_split(selected_features, income, t
 regr.fit(X_train, Y_train)
 
 y_predict = np.exp(regr.predict(target_frame[target_columns]))
+# print local score
 print(metrics.mean_absolute_error(np.exp(Y_test), np.exp(regr.predict(X_test))))
 
 # Instances saved to separate file for ease of access
